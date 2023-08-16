@@ -1,0 +1,10 @@
+[package]
+name = "prosole"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "A polished, clean and colourful console logging and user input system."
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
