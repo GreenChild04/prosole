@@ -3,7 +3,7 @@ use super::Link;
 pub struct InputBufNode {
     pub next: Link,
     pub prev: Link,
-    pub value: Box<str>,
+    pub value: Box<char>,
 }
 
 impl InputBufNode {
