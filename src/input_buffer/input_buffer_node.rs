@@ -1,7 +1,4 @@
-use std::rc::Rc;
-use std::cell::RefCell;
-
-type Link = Option<Rc<RefCell<InputBufNode>>>;
+use super::Link;
 
 pub struct InputBufNode {
     pub next: Link,
