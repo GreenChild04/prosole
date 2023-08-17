@@ -14,7 +14,7 @@ macro_rules! def_colours {
 }
 
 def_colours! {
-    NONE = "\x1b[0m";
+    NORMAL = "\x1b[0m";
     PINK = "\x1b[35m";
     WHITE = "\x1b[37m";
     BLUE = "\x1b[34m";
