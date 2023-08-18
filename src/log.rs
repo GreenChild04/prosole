@@ -67,9 +67,9 @@ impl<'a> Log<'a> {
 /// # Usage
 /// ```rust
 /// use soulog::*;
-/// fn process(logger: impl Logger) {
+/// fn process(mut logger: impl Logger) {
 ///     log!((logger) Process("Example log of number: {}", 12));
-///     log!((logger.error) Process("Example inconvenience log") as Inconvenience)
+///     log!((logger.error) Process("Example inconvenience log") as Inconvenience);
 /// }
 /// ```
 #[macro_export]
