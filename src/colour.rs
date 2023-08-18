@@ -5,7 +5,8 @@ pub use crate::colour_format;
 /// Used to format text with colour
 /// # Examples
 /// ```rust
-/// colour_format![pink("["), none("Logger"), pink("] "), none("Example Log")]
+/// use soulog::*;
+/// colour_format![pink("["), none("Logger"), pink("] "), none("Example Log")];
 /// // outputs: [Logger] Example Log
 /// // but with colour
 /// ```

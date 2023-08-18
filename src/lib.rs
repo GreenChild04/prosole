@@ -5,3 +5,4 @@ pub mod logger;
 // Prelude
 pub use log::*;
 pub use logger::*;
+pub use colour::Colours;
