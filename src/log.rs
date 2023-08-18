@@ -27,23 +27,23 @@ pub struct Log<'a> {
     /// The actual log itself *eg* `Collected password is correct!`
     pub message: &'a str,
     /// Allowed responses from a `Logger`
-    pub allowed_responses: &'a [ErrorLogResponse],
+    pub allowed_responses: &'a [ErrorResponse],
 }
 
 /// Possible responses from a `Logger` during an error
 #[derive(Clone, Copy, Eq, PartialEq)]
-pub enum ErrorLogResponse {
+pub enum ErrorResponse {
     /// Asks the process to retry the action in hopes it works on the second try
     Retry,
     /// Asks the process to just panic
     Panic,
-    /// Asks the process to run the crash function of the logger
+    /// Asks the process to crash the application gracefully
     Crash,
     /// Asks the process to ask the user to recover from error
     AskUser,
 }
 
-impl ErrorLogResponse {
+impl ErrorResponse {
     /// Check if response is allowed for the log.
     #[inline]
     pub fn allowed_in(&self, log: &Log) -> bool {
@@ -53,7 +53,7 @@ impl ErrorLogResponse {
 
 impl<'a> Log<'a> {
     /// Constructs a new log
-    pub fn new(log_type: LogType, origin: &'a str, message: &'a str, allowed_responses: &'a [ErrorLogResponse]) -> Self {
+    pub fn new(log_type: LogType, origin: &'a str, message: &'a str, allowed_responses: &'a [ErrorResponse]) -> Self {
         Self {
             log_type,
             origin,
