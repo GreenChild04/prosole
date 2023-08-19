@@ -1,6 +1,6 @@
 [package]
 name = "soulog"
-version = "1.0.2"
+version = "1.0.3"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 description = "A library for polished, clean and colourful console logging and error handling."
