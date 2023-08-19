@@ -12,7 +12,7 @@ pub trait Logger {
     fn error(&mut self, log: Log) -> ErrorResponse;
 
     /// Logs a log to console
-    fn log(&self, log: Log) {
+    fn log(&mut self, log: Log) {
         let log = colour_format![blue("["), cyan(log.origin), blue("] "), none(log.message)];
         println!("{log}");
     }
