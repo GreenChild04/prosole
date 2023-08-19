@@ -113,7 +113,10 @@ macro_rules! if_err {
             ) {
                 ErrorResponse::Retry => continue,
                 ErrorResponse::Panic => panic!("unexpected error: {:#?}", $err),
-                ErrorResponse::Crash => $logger.crash(stringify!($origin), &format!("{:#?}", $err)),
+                ErrorResponse::Crash => {
+                    let _ = $logger.error(Log::new(LogType::Fatal, stringify!($origin), &format!("{:#?}", $err), &[]));
+                    $logger.crash()
+                },
                 ErrorResponse::AskUser => panic!("meta error: logger returned invalid error response"),
             }
         }}
