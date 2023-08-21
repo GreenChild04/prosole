@@ -10,6 +10,10 @@ impl Logger for PanicLogger {
     fn new() -> Self { Self }
     fn hollow(&self) -> Self { Self }
 
+    fn crash<T>(&self) -> T {
+        panic!("program crashed (didn't exit successfully)")
+    }
+
     fn error(&mut self, log: Log) -> ErrorResponse {
         let log = match log.log_type {
             LogType::Inconvenience => colour_format![blue("["), yellow(log.origin), blue("] "), yellow("Inconvenience: "), none(log.message)],
