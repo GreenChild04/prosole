@@ -16,6 +16,7 @@ impl Logger for PanicLogger {
 
     fn error(&mut self, log: Log) -> ErrorResponse {
         let log = match log.log_type {
+            LogType::Warning => colour_format![blue("["), yellow(log.origin), blue("] "), yellow("Warning: "), none(log.message)],
             LogType::Inconvenience => colour_format![blue("["), yellow(log.origin), blue("] "), yellow("Inconvenience: "), none(log.message)],
             LogType::Fatal => colour_format![blue("["), red(log.origin), blue("] "), red("Fatal: "), none(log.message)],
             LogType::Failure => colour_format![blue("["), red(log.origin), blue("] "), red("Failure: "), none(log.message)],

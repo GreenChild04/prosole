@@ -10,6 +10,8 @@
 pub enum LogType {
     /// A normal log *eg* `Loaded version 1.2.0`
     Log,
+    /// A warning to possible future errors *eg* `This action will break other commands`
+    Warning,
     /// An expected recoverable error *eg* `Database not found; creating a new one`
     Inconvenience,
     /// An unexpected error that could be recoverable *eg* `IO error; retrying...`
@@ -99,7 +101,10 @@ macro_rules! log {
 /// `if_err!((logger) [Process, <err_var> => "Error Message"] retry {<code that returns a result>})`
 /// 
 /// For errors that can be easily recovered from:
-/// `if_err!((logger) {<code the returns result>} else(<error varible name>) {<code that handles the error>})`
+/// `if_err!((logger) {<code that returns result>} else(<error varible name>) {<code that handles the error>})`
+/// 
+/// For errors that cannot be recovered from:
+/// `if_err!((logger) [Process, <err_var> => "Error Message"] {<code that returns result>} crash <crash code>)`
 /// 
 /// For completely custom `ErrorResponse` response:
 /// `if_err!((logger) [Process, <err_var> => "Error Message"] {<result returning code>} manual {<ErrorResponse> => <code that handles it>})`
@@ -138,6 +143,18 @@ macro_rules! if_err {
                 Log::new(LogType::Failure, stringify!($origin), &format!$msg, &[$(ErrorResponse::$response),*])
             ) {
                 $(ErrorResponse::$response => $action,)*
+                _ => panic!("meta error: logger returned invalid error response"),
+            }
+        }
+    };
+
+    (($logger:ident) [$origin:ident, $err:ident => $msg:tt] $code:block crash $crash:expr) => {
+        match $code {
+            Ok(x) => x,
+            Err($err) => match $logger.error(
+                Log::new(LogType::Failure, stringify!($origin), &format!$msg, &[ErrorResponse::Crash])
+            ) {
+                Crash => $crash,
                 _ => panic!("meta error: logger returned invalid error response"),
             }
         }
