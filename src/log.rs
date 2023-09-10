@@ -7,6 +7,7 @@
 /// **`Failure`:** An unexpected error that could be recoverable *eg* `IO error; retrying...`
 /// 
 /// **`Fatal`:** A major error that is unrecoverable and forces the application to crash *eg* `Everything that could've gone wrong has gone wrong; crashing app`
+#[derive(Debug)]
 pub enum LogType {
     /// A normal log *eg* `Loaded version 1.2.0`
     Log,
@@ -18,6 +19,8 @@ pub enum LogType {
     Failure,
     /// A major error that is unrecoverable and forces the application to crash *eg* `Everything that could've gone wrong has gone wrong; crashing app`
     Fatal,
+    /// The result of a command or operation
+    Result,
 }
 
 /// A log to be passed into a `Logger`
@@ -77,13 +80,13 @@ impl<'a> Log<'a> {
 #[macro_export]
 macro_rules! log {
     (($logger:ident) $origin:ident$tokens:tt) => {
-        $logger.log(
+        $logger.verbose(
             Log::new(LogType::Log, stringify!($origin), &format!$tokens, &[])
         );
     };
 
     (($logger:ident) $origin:ident$tokens:tt as $type:ident) => {
-        $logger.log(
+        $logger.verbose(
             Log::new(LogType::$type, stringify!($origin), &format!$tokens, &[])
         );
     };

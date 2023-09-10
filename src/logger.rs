@@ -7,15 +7,14 @@ pub trait Logger {
     /// Creates a new instance of the logger (for the impl syntax)
     fn hollow(&self) -> Self;
     /// Crashes the application gracefully
-    fn crash<T>(&self) -> T { std::process::exit(1) }
+    fn crash<T>(&mut self) -> T { std::process::exit(1) }
     /// Logs an error to the console and informs process how to recover
     fn error(&mut self, log: Log) -> ErrorResponse;
+    /// Logs vital logs to the console
+    fn vital(&mut self, log: Log);
 
-    /// Logs a log to console
-    fn log(&mut self, log: Log) {
-        let log = colour_format![blue("["), cyan(log.origin), blue("] "), none(log.message)];
-        println!("{log}");
-    }
+    /// Logs verbose logs to the console
+    fn verbose(&mut self, log: Log);
 
     /// Asks user a question
     fn ask(&self, origin: &str, prompt: &str) -> String {

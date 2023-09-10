@@ -10,17 +10,29 @@ impl Logger for PanicLogger {
     fn new() -> Self { Self }
     fn hollow(&self) -> Self { Self }
 
-    fn crash<T>(&self) -> T {
+    fn crash<T>(&mut self) -> T {
         panic!("program crashed (didn't exit successfully)")
+    }
+
+    fn verbose(&mut self, log: Log) {
+        let log = colour_format![blue("["), cyan(log.origin), blue("] "), none(log.message)];
+        println!("{log}");
+    }
+
+    fn vital(&mut self, log: Log) {
+        let log = match log.log_type {
+            LogType::Warning => colour_format![blue("["), yellow(log.origin), blue("] "), yellow("Warning: "), none(log.message)],
+            LogType::Inconvenience => colour_format![blue("["), yellow(log.origin), blue("] "), yellow("Inconvenience: "), none(log.message)],
+            LogType::Result => colour_format![blue("["), green("Result"), blue("] "), green(log.origin), blue(": "), none(log.message)],
+            _ => panic!("meta error: invalid vital log type '{:?}'", log.log_type),
+        }; println!("{log}");
     }
 
     fn error(&mut self, log: Log) -> ErrorResponse {
         let log = match log.log_type {
-            LogType::Warning => colour_format![blue("["), yellow(log.origin), blue("] "), yellow("Warning: "), none(log.message)],
-            LogType::Inconvenience => colour_format![blue("["), yellow(log.origin), blue("] "), yellow("Inconvenience: "), none(log.message)],
             LogType::Fatal => colour_format![blue("["), red(log.origin), blue("] "), red("Fatal: "), none(log.message)],
             LogType::Failure => colour_format![blue("["), red(log.origin), blue("] "), red("Failure: "), none(log.message)],
-            LogType::Log => colour_format![blue("["), red(log.origin), blue("] "), none(log.message)],
+            _ => panic!("meta error: invalid error log type '{:?}'", log.log_type),
         }; println!("{log}");
         ErrorResponse::Panic
     }
