@@ -7,7 +7,7 @@ macro_rules! def_colours {
     )*) => {
         impl Colours {
             $(
-                pub const $name: &str = $colour;
+                pub const $name: &'static str = $colour;
             )*
         }
     }
